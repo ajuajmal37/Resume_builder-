@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Preview</title>
+    <title>Resume Builder</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"
+        integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=M+PLUS+1p:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+            font-family: 'M PLUS 1p', sans-serif;
+
+        }
+
+        .wrapper {
+            background-color: #d8d8d8;
+            padding-top: 50px;
+            padding-bottom: 50px;
+            position: relative;
+
+        }
+        
+        .action-bar {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            padding: 5px 10px;
+            border-radius: 10px;
+
+        }
+
+        .main {
+            background-color: white;
+            width: 21cm;
+            min-height: 29.7cm;
+            margin: 140px 0;
+            margin: auto;
+            padding: 30px;
+        }
+
+         .head {
+            width: 100%;
+            /* padding-bottom: 30px; */
+        }
+
+        .container {
+            padding: 3px 0;
+        }
+
+        .head .container .name span {
+            font-size: 28px;
+            text-transform: uppercase;
+            font-weight: 400;
+        }
+
+        .head .container .desig span {
+            font-size: 18px;
+            text-transform: uppercase;
+            font-weight: 900;
+        }
+
+        .head .container .addr span {
+            font-size: 17px;
+            text-transform: capitalize;
+            font-weight: 700;
+        }
+
+        .head .container .social {
+            padding: 2px 0px;
+        }
+
+        .pro_pic {
+            width: 80px;
+            height: 80px;
+            margin: 0px 15px;
+            border-radius: 50%;
+
+        }
+
+        .body {
+            display: flex;
+            justify-content:start;
+        }
+
+        .body .left {
+            padding-top: 5px;
+            padding-right: 20px;
+            width:35%;
+        }
+
+        .body .right {
+            padding-top: 5px;
+            padding-left: 20px;
+            width:70%;
+        }
+
+        p {
+
+        }
+
+        h3 {
+            font-size: 19px;
+        }
+
+        h4 {
+            font-size: 16px;
+        }
+
+        h5 {
+            font-size: 16px;
+        }
+        .buble {
+            padding: 5px 10px;
+            background-color: rgba(37, 49, 57, 0.726);
+            border-radius: 38px;
+            margin: 2px;
+        }
+
+        .buble span {
+            font-size: 13px;
+            color: white;
+            font-weight: 500;
+        }
+        .main .row {
+            margin: 0px;
+        }
+
+        @media print {
+            body {
+                width: 21cm;
+                height: 29.7cm;
+                /* margin: 30mm 45mm 30mm 45mm;  */
+                /* change the margins as you want them to be. */
+        } 
+        .navbar, .action-bar{
+            display: none;
+        }
+
+        .wrapper {
+            padding-top: 0px;
+            padding-bottom: 0px;
+            position: relative;
+
+        }
+
+        .main {
+            background-color: #fff;
+            width: 100%;
+            min-height: 29.7cm;
+            margin: 0 ;
+         
+
+        }
+
+        }
+        @page { margin: 0; }
+
+        .pro_pic img{
+            width :100%;
+            height :100%;
+            border-radius:50%;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar bg-light">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">
+                <img src="/images/icons/resume-96.png" alt="Logo" width="30" height="24"
+                    class="d-inline-block align-text-top">
+                Resume Builder
+            </a>
+        </div>
+    </nav>
+    <div class="wrapper ">
+        <div class="action-bar ">
+            <a href="/resume/{{key}}" class="btn  btn-secondary"> <i class="fa-sharp fa-solid fa-pen-to-square"></i> Edit </a>
+            <a href="/resume/convert/pdf/{{key}}" class="btn  btn-danger"> <i class="fa-solid fa-file-pdf"></i> Export pdf</a>
+            <button class="btn btn-success" id="print_resume"><i class="fa-solid fa-print"></i> Print</button>
+        </div>
+        <div class="main">
+            <div class="head">
+                <div class="container" style="display: flex;justify-content:start">
+                    {% if data['profilepic'] %}
+                    <div class="pro_pic">
+                        <img src="{{data['profilepic']}}" alt="">
+                    </div>
+                    {% endif %}
+                    <div>
+                        <div class="name">
+                            <span> <span style="font-weight:900">{{data['lname']}}</span></span>
+                        </div>
+                        <div class="desig">
+                            <span>{{data['designation']}}</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="container">
+                    <div class="addr">
+                        <span> {{data['com_addr']}}</span>
+                    </div>
+                    <div class="social">
+                        <span><span style="font-weight:700;">Phone :</span>{{data['mobile']}} </span> |
+                        <span><span style="font-weight:700;">Email :</span>{{data['email']}}</span>
+                    </div>
+                </div>
+                <div style="border:1px solid #999;"></div>
+            </div>
+            <div class="body">
+                <div class="left">
+                    <div class="container">
+                        <h3 >PROFILE</h3>
+                        <hr style="border: 1px solid rgb(180, 180, 180); padding: 0;">
+                        <p>
+                            {{data['discr']}}
+                        </p>
+                    </div>
+                    {% if data['social_linkedin']  or  data['social_git'] or  data['social_insta'] or  data['social_fb']%}
+                    <div class="container">
+                        <h3>SOCIAL LINK</h3>
+                        <hr style="border: 1px solid rgb(180, 180, 180); padding: 0;">
+                        <p>
+                         {% if data['social_linkedin'] %}
+                        <div>
+                            <div style="font-weight: 700 ;">Linked in:</div>
+                            <div>linkedin.com/in/{{data['social_linkedin']}}</div>
+                        </div>
+                        {% endif %}
+                        {% if data['social_git'] %}
+                        <div>
+                            <div style="font-weight: 700 ;">Github:</div>
+                            <div>github.com/{{data['social_git']}}</div>
+                        </div>
+                        {% endif %}
+                        {% if data['social_insta'] %}
+                        <div>
+                            <div style="font-weight: 700 ;">Instagram:</div>
+                            <div> instagram.com/{{data['social_insta']}}</div>
+                        </div>
+                        {% endif %}
+                         {% if data['social_fb'] %}
+                        <div>
+                            <div style="font-weight: 700 ;">Facebook:</div>
+                            <div>facebook.com/{{data['social_fb']}}</div>
+                        </div>
+                        {% endif %}
+                        </p>
+                    </div>
+                    {% endif %}
+                </div>
+                <div class="right">
+                    {% if data['work_experiance'] %}
+                    <div class="container">
+                        <h3>WORK EXPERIANCE</h3>
+                        <hr style="border: 1px solid rgb(180, 180, 180); padding: 0;">
+                        {% for item in data['work_experiance']%}
+                        <p>
+                        <h4 style="font-weight: 700;"> {{item['company']}}</h4>
+                        <span>{{item['designation']}}</span><br>
+                        <span >{{item['start_with']}} - {{ 'Continuing' if item['end_with'] == '' else item['end_with'] }}</span>
+                        </p>
+                       {% endfor %}
+                    </div>
+                     {% endif %}
+                     {% if data['education_qualification'] %}
+                    <div class="container">
+                        <h3>EDUCATION</h3>
+                        <hr style="border: 1px solid rgb(180, 180, 180); padding: 0;">
+                        {% for item in data['education_qualification']%}
+                        <p>
+                        <h4 style="font-weight: 700;">{{item['stream']}}</h4>
+                        <span>{{item['institute']}}</span><br>
+                        <span>Year of completion : Year of pass : {{ 'Continuing' if item['year'] == '' else item['year'] }} </span>
+                        </p>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+
+                </div>
+
+            </div>
+            {% if data['skills'] != ['']%}
+            <div class="container">
+                        <h3>SKILLS</h3>
+                        <hr style="border: 1px solid rgb(180, 180, 180); padding: 0;">
+                        <p>
+                        <div style="display: flex;justify-content: start;flex-direction: row;
+                            flex-wrap: wrap;">
+
+                            {% for item in data['skills'] %}
+                                    <div class="buble"><span>{{item}}</span></div>
+                                    {% endfor %}
+                        </div>
+                        </p>
+
+
+                    </div>
+            {% endif %}
+            {% if data['experts'] != ['']%}
+                    <div class="container">
+                        <h3>AREA OF EXPERTISE</h3>
+                        <hr style="border: 1px solid rgb(180, 180, 180); padding: 0;">
+                        <p>
+                        <div style="display: flex;justify-content: start;flex-direction: row;
+                            flex-wrap: wrap;">
+
+                            {% for item in data['experts'] %}
+                                    <div class="buble"><span>{{item}}</span></div>
+                                    {% endfor %}
+                        </div>
+                        </p>
+
+
+                    </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <script>
+
+
+        document.getElementById('print_resume').addEventListener('click', function (e) {
+            e.preventDefault();
+            window.print()
+
+        })
+    </script>
+
+</body>
+
+</html>

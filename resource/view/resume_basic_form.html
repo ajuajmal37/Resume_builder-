@@ -1,0 +1,886 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Resume Builder</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"
+        integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        .main-container {
+            padding-right: 15px;
+            padding-left: 15px;
+            margin-right: auto;
+            margin-left: auto;
+        }
+
+        .file_area {
+            width: 176px !important;
+            height: 176px !important;
+            border-radius: 5%;
+            border: dashed 3px rgb(109, 109, 109);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            background-color: rgb(228, 228, 228);
+        }
+
+        .active {
+            border: solid 3px rgb(109, 109, 109) !important;
+            padding: 0px !important;
+
+        }
+
+        .file_area img {
+            width: 100%;
+            height: 100%;
+        }
+
+        .file_area .icon {
+            font-size: 28px !important;
+            text-align: center;
+        }
+
+        .file_area span {
+            font-size: 15px;
+        }
+
+        .file_area button {
+            font-size: 15px;
+            margin: auto;
+            width: 80%;
+        }
+
+        .xpert_buble,
+        .skill_buble {
+            padding: 5px 15px;
+            background-color: rgba(0, 132, 255, 0.918);
+            border-radius: 38px;
+            margin: 5px;
+        }
+
+        .xpert_buble span,
+        .skill_buble span {
+            font-size: 13px;
+            color: white;
+            font-weight: 500;
+            margin: 0 3px
+        }
+    </style>
+    <script>
+        function rmBubles(ele) {
+            ele.parentElement.parentElement.remove()
+
+        }
+        function rmBlock(ele) {
+            ele.parentElement.remove()
+
+        }
+
+
+
+
+    </script>
+</head>
+
+<body>
+    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel">Modal title</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    ...
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Edit</button>
+                    <a href="" class="btn btn-primary" style="text-decoration:none">Preview</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <nav class="navbar bg-light">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">
+                <img src="/images/icons/resume-96.png" alt="Logo" width="30" height="24"
+                    class="d-inline-block align-text-top">
+                Resume Builder
+            </a>
+        </div>
+    </nav>
+    <div class="wrapper main-container">
+        <div class="row">
+            <div class="col ">
+                <div class="container">
+                    <form id="frm_main" action="/resume/genarate/{{key}}" method="post">
+                        <div class="mt-3">
+                            <div class="container my-3 bg-light border rounded ">
+                                <div class="p-3">
+                                    <h3 class="h4 d-inline"><i class="fa-solid fa-user"></i></h3>
+                                    <h3 class="h4 d-inline">Profile</h3>
+                                </div>
+                                <div class="row m-3 py-3  g-2">
+                                    <div class="d-flex justify-content-start flex-column ">
+                                        <div class="file_area ">
+                                            {%if data['profilepic']%}
+                                            <img src="{{data['profilepic']}}" alt="image">
+                                            <input type="text" name="profilepic" value="{{data['profilepic']}}" hidden>
+                                            {%else%}
+                                            <div class="icon"><i class="fa-solid fa-user h1"></i></div>
+
+                                            {%endif%}
+                                            <input type="file" id="pro_pic" hidden>
+                                        </div>
+                                        <div class="col my-2">
+                                            <button class="btn btn-sm btn-primary " id="browse_btn">Change
+                                                photo
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <div class="row mb-3 g-2">
+                                    <div class="col-md">
+                                        <div class="form-floating">
+                                            <input type="text" class="form-control" id="lname" name="lname"
+                                                aria-datatype="name" autocomplete="off" aria-required="true"
+                                                placeholder="Full name" value="{{data['lname']}}">
+                                            <small class="text-danger">*Reqiured</small>
+                                            <label for="lname">Full name</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md">
+                                        <div class="form-floating">
+                                            <input type="text" class="form-control" id="designation" name="designation"
+                                                aria-datatype="name" autocomplete="off" placeholder="Designation"
+                                                aria-required="true" value="{{data['designation']}}">
+                                            <small class="text-danger">*Reqiured</small>
+                                            <label for="fname">Designation</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row mb-3 g-2">
+                                    <div class="form-floating">
+                                        <textarea class="form-control" placeholder="Discription" name="discr" id="discr"
+                                            aria-datatype="alpha_num" aria-required="true"
+                                            style="height: 100px">{{data['discr']}}</textarea>
+                                        <small class="text-danger">*Reqiured</small>
+                                        <label for="discr">Discription</label>
+                                    </div>
+                                </div>
+                                <div class="row mb-3 g-2">
+                                    <div class="form-floating">
+                                        <textarea class="form-control" placeholder="Communication address"
+                                            aria-datatype="alpha_num" aria-required="true" name="com_addr" id="com_addr"
+                                            style="height: 100px">{{data['com_addr']}}</textarea>
+                                        <small class="text-danger">*Reqiured</small>
+                                        <label for="com_addr">Communication address</label>
+                                    </div>
+                                </div>
+                                <div class="row mb-3 pb-3 g-2">
+                                    <div class="col-md">
+                                        <div class="form-floating">
+                                            <input type="text" class="form-control" id="mobile" name="mobile"
+                                                aria-datatype="mobile" aria-required="true" autocomplete="off"
+                                                placeholder="Contact number" value="{{data['mobile']}}">
+                                            <small class="text-danger">*Reqiured</small>
+                                            <label for="mobile">Contact number</label>
+
+                                        </div>
+                                    </div>
+                                    <div class="col-md">
+                                        <div class="form-floating">
+                                            <input type="text" class="form-control" id="email" name="email"
+                                                aria-required="true" autocomplete="off" placeholder="Email"
+                                                aria-datatype="email" value="{{data['email']}}">
+                                            <small class="text-danger">*Reqiured</small>
+                                            <label for="email">Email</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="container  my-3  border bg-light rounded">
+                                <div class="p-3">
+                                    <h3 class="h4 d-inline"><i class="fa-sharp fa-solid fa-hashtag"></i></h3>
+                                    <h3 class="h4 d-inline">Social accounts</h3>
+                                </div>
+                                <div class="row mb-3 g-2">
+                                    <div class="col-md">
+                                        <div class="input-group mb-3">
+                                            <span class="input-group-text bg-white"><i
+                                                    class="fa-brands fa-linkedin h3 p-1"></i></span>
+                                            <div class="form-floating">
+                                                <input type="text" class="form-control" id="social_linkedin"
+                                                    name="social_linkedin" placeholder="Linked in"
+                                                    value="{{data['social_linkedin']}}">
+                                                <label for="social_linkedin">Linked in</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md">
+                                        <div class="input-group mb-3">
+                                            <span class="input-group-text bg-white"><i
+                                                    class="fa-brands fa-square-github h3 p-1"></i></span>
+                                            <div class="form-floating">
+                                                <input type="text" class="form-control" id="social_git"
+                                                    name="social_git" placeholder="Github"
+                                                    value="{{data['social_git']}}">
+                                                <label for="social_git">Github</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md">
+                                        <div class="input-group mb-3">
+                                            <span class="input-group-text bg-white"><i
+                                                    class="fa-brands fa-square-facebook h3 p-1"></i></span>
+                                            <div class="form-floating">
+                                                <input type="text" class="form-control" id="social_fb" name="social_fb"
+                                                    value="{{data['social_fb']}}" placeholder="Facebook">
+                                                <label for="social_fb">Facebook</label>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="row mb-3 g-2">
+                                    <div class="col-md-4">
+                                        <div class="input-group mb-3">
+                                            <span class="input-group-text bg-white"><i
+                                                    class="fa-brands fa-square-instagram h3 p-1"></i></span>
+                                            <div class="form-floating">
+                                                <input type="text" class="form-control" id="social_insta"
+                                                    value="{{data['social_insta']}}" name="social_insta"
+                                                    placeholder="Instagram">
+                                                <label for="social_insta">Instagram</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="container  my-3  border bg-light rounded">
+                                <div class="p-3">
+                                    <h3 class="h4 d-inline"><i class="fa-sharp fa-solid fa-graduation-cap"></i></h3>
+                                    <h3 class="h4 d-inline">Education Qualification</h3>
+                                </div>
+
+                                {% if data['education_qualification'] %}
+                                <div class="container" id="edu_block">
+
+                                    {% for item in data['education_qualification'] %}
+                                    <div class="edu_qual border rounded shadow-sm my-3 p-3">
+                                        <div class="float-end" onclick="rmBlock(this)"><i
+                                                class="text-danger h4 fa-solid fa-circle-minus"></i></div>
+                                        <br>
+                                        <div class="row mb-3 g-2">
+                                            <div class="row mb-3 pb-3 g-2">
+                                                <div class="col-md-3">
+                                                    <div class="form-floating"><select
+                                                            class="form-select edu_qualification"
+                                                            aria-label="Qualification">
+                                                            <option selected>Choose</option>
+                                                            <option value="6" {% if item[ 'type' ]=='6' %} selected {%
+                                                                endif %}>Graduation</option>
+                                                            <option value="1" {% if item[ 'type' ]=='1' %} selected {%
+                                                                endif %}>Graduation</option>
+                                                            <option value="2" {% if item[ 'type' ]=='2' %} selected {%
+                                                                endif %}>Diploma</option>
+                                                            <option value="3" {% if item[ 'type' ]=='3' %} selected {%
+                                                                endif %}>Higer Secondary</option>
+                                                            <option value="4" {% if item[ 'type' ]=='4' %} selected {%
+                                                                endif %}>SSLC</option>
+                                                            <option value="5" {% if item[ 'type' ]=='5' %} selected {%
+                                                                endif %}>Other</option>
+                                                        </select><label for="edu_qualification">Qualification</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md">
+                                                    <div class="form-floating"><input type="text"
+                                                            class="form-control edu_stream" autocomplete="off"
+                                                            value="{{item['stream']}}" placeholder="Stream name">
+                                                        <label for="edu_stream">Stream name</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row mb-3 pb-3 g-2">
+                                                <div class="col-md">
+                                                    <div class="form-floating"><input type="text"
+                                                            class="form-control edu_institute" autocomplete="off"
+                                                            value="{{item['institute']}}" placeholder="Institute">
+                                                        <label for="edu_institute">Institute</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md">
+                                                    <div class="form-floating"><input type="month"
+                                                            class="form-control edu_year_pass" autocomplete="off"
+                                                            value="{{item['year']}}" placeholder="Year of pass">
+                                                        <label for="edu_year_pass">Year of pass</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                    {%endfor %}
+                                </div>
+                                {% else %}
+                                <div class="container" id="edu_block">
+                                    <div class="edu_qual border rounded shadow-sm my-3 p-3">
+                                        <div class="float-end" onclick="rmBlock(this)"><i
+                                                class="text-danger h4 fa-solid fa-circle-minus"></i></div>
+                                        <br>
+
+                                        <div class="row mb-3 g-2">
+                                            <div class="row mb-3 pb-3 g-2">
+                                                <div class="col-md-3">
+                                                    <div class="form-floating"><select
+                                                            class="form-select edu_qualification"
+                                                            aria-label="Qualification">
+                                                            <option selected>Choose</option>
+                                                            <option value="1">Graduation</option>
+                                                            <option value="2">Diploma</option>
+                                                            <option value="3">Higer Secondary</option>
+                                                            <option value="4">SSLC</option>
+                                                            <option value="5">Other</option>
+                                                        </select><label for="edu_qualification">Qualification</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md">
+                                                    <div class="form-floating"><input type="text"
+                                                            class="form-control edu_stream" autocomplete="off"
+                                                            placeholder="Stream name">
+                                                        <label for="edu_stream">Stream name</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row mb-3 pb-3 g-2">
+                                                <div class="col-md">
+                                                    <div class="form-floating"><input type="text"
+                                                            class="form-control edu_institute" autocomplete="off"
+                                                            placeholder="Institute">
+                                                        <label for="edu_institute">Institute</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md">
+                                                    <div class="form-floating"><input type="month"
+                                                            class="form-control edu_year_pass" autocomplete="off"
+                                                            placeholder="Year of pass">
+                                                        <label for="edu_year_pass">Year of pass</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                {% endif %}
+
+
+                                <div class="row">
+                                    <div class="d-flex justify-content-end">
+                                        <div class="h4" id="add_edu_block"><i
+                                                class="fa-solid fa-circle-plus text-success"></i></div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="container  my-3  border bg-light rounded">
+                                <div class="p-3">
+                                    <h3 class="h4 d-inline"><i class="fa-solid fa-briefcase"></i></h3>
+                                    <h3 class="h4 d-inline">Work Experiance</h3>
+                                </div>
+                                {% if data['work_experiance'] %}
+                                <div class="container" id="work_block">
+                                    {% for item in data['work_experiance'] %}
+                                    <div class="work border rounded shadow-sm my-3 p-3">
+                                        <div class="float-end" onclick="rmBlock(this)"><i
+                                                class="text-danger h4 fa-solid fa-circle-minus"></i></div>
+                                        <br>
+                                        <div class="row mb-3 g-2">
+                                            <div class="row mb-3 pb-3 g-2">
+                                                <div class="col-md">
+                                                    <div class="form-floating"><input type="text"
+                                                            class="form-control work_designation" autocomplete="off"
+                                                            value="{{item['designation']}}" placeholder="Designation">
+                                                        <label for="work_designation">Designation</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md">
+                                                    <div class="form-floating"><input type="text"
+                                                            class="form-control work_company" autocomplete="off"
+                                                            value="{{item['company']}}" placeholder="Company"><label
+                                                            for="work_company">Company</label></div>
+                                                </div>
+                                            </div>
+                                            <div class="row mb-3 pb-3 g-2">
+                                                <div class="col-md">
+                                                    <div class="form-floating"><input type="month"
+                                                            class="form-control work_start_with" autocomplete="off"
+                                                            value="{{item['start_with']}}"
+                                                            placeholder="Join date"><label for="work_start_with">Joined
+                                                            on</label></div>
+                                                </div>
+                                                <div class="col-md">
+                                                    <div class="form-floating"><input type="month"
+                                                            class="form-control work_end_with" autocomplete="off"
+                                                            value="{{item['end_with']}}" placeholder="Join date">
+                                                        <label for="work_end_with">leave on</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {%endfor %}
+                                </div>
+
+                                {% else %}
+                                <div class="container" id="work_block">
+                                    <div class="work border rounded shadow-sm my-3 p-3">
+                                        <div class="float-end" onclick="rmBlock(this)"><i
+                                                class="text-danger h4 fa-solid fa-circle-minus"></i></div>
+                                        <br>
+                                        <div class="row mb-3 g-2">
+                                            <div class="row mb-3 pb-3 g-2">
+                                                <div class="col-md">
+                                                    <div class="form-floating"><input type="text"
+                                                            class="form-control work_designation" autocomplete="off"
+                                                            placeholder="Designation">
+                                                        <label for="work_designation">Designation</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md">
+                                                    <div class="form-floating"><input type="text"
+                                                            class="form-control work_company" autocomplete="off"
+                                                            placeholder="Company"><label
+                                                            for="work_company">Company</label></div>
+                                                </div>
+                                            </div>
+                                            <div class="row mb-3 pb-3 g-2">
+                                                <div class="col-md">
+                                                    <div class="form-floating"><input type="month"
+                                                            class="form-control work_start_with" autocomplete="off"
+                                                            placeholder="Join date"><label for="work_start_with">Joined
+                                                            on</label></div>
+                                                </div>
+                                                <div class="col-md">
+                                                    <div class="form-floating"><input type="month"
+                                                            class="form-control work_end_with" autocomplete="off"
+                                                            placeholder="Join date">
+                                                        <label for="work_end_with">leave on</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {%endif%}
+                                <div class="row">
+                                    <div class="d-flex justify-content-end">
+                                        <div class="h4" id="add_work_block"><i
+                                                class="fa-solid fa-circle-plus text-success"></i></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="container  my-3  border bg-light rounded">
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="p-3">
+                                            <h3 class="h4 d-inline"><i class="fa-solid fa-list"></i></h3>
+                                            <h3 class="h4 d-inline">Skills</h3>
+                                        </div>
+
+                                        <div class="container  my-3">
+
+                                            <div class="col-md">
+                                                <div class="input-group mb-3">
+                                                    <input type="text" class="form-control" aria-label="Skills"
+                                                        aria-describedby="button_addon_skill" id="addon_skill">
+                                                    <button class="btn btn-outline-white" type="button"
+                                                        id="button_addon_skill"><i
+                                                            class="fa-solid fa-circle-plus text-success"></i>
+                                                    </button>
+
+
+                                                </div>
+                                            </div>
+                                            <div class="col">
+                                                <div class="col">
+                                                    <div id="skills_block"
+                                                        class="d-flex justify-content-start flex-row flex-wrap">
+                                                        {% if data['skills'] != ['']%}
+                                                        {%for skill in data['skills'] %}
+                                                        <div class="skill_buble"><span>{{skill}}</span><span
+                                                                class="skill_rem p-1"><i
+                                                                    class="fa-sharp fa-solid fa-xmark"
+                                                                    onclick="rmBubles(this)"></i></span>
+                                                        </div>
+                                                        {%endfor%}
+                                                        {%endif%}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col">
+                                        <div class="p-3">
+                                            <h3 class="h4 d-inline"><i class="fa-solid fa-list"></i></h3>
+                                            <h3 class="h4 d-inline">Area of Expertise</h3>
+                                        </div>
+
+                                        <div class="container  my-3">
+                                            <div class="col-md">
+                                                <div class="input-group mb-3">
+                                                    <input type="text" class="form-control" aria-label="Skills"
+                                                        aria-describedby="button-addon-skill">
+                                                    <button class="btn btn-outline-white" type="button"
+                                                        id="button_addon_xpert"><i
+                                                            class="fa-solid fa-circle-plus text-success"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            <div class="col">
+                                                <div id="expert_block"
+                                                    class="d-flex justify-content-start flex-row flex-wrap">
+                                                    {% if data['experts'] != ['']%}
+                                                    {%for expert in data['experts'] %}
+                                                    <div class="xpert_buble"><span>{{expert}}</span><span
+                                                            class="skill_rem p-1"><i class="fa-sharp fa-solid fa-xmark"
+                                                                onclick="rmBubles(this)"></i></span>
+                                                    </div>
+                                                    {%endfor%}
+                                                    {%endif%}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="container  my-3  border bg-light rounded">
+                                <div class="col p-4 d-flex justify-content-center">
+                                    <button class="btn btn-primary " type="submit">Preview</button>
+
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+
+    </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
+        integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.min.js"
+        integrity="sha384-7VPbUDkoPSGFnVtYi0QogXtr74QeVeeIs99Qfg5YCF+TidwNdjvaKZX19NZ/e6oz"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"
+        integrity="sha512-aVKKRRi/Q/YV+4mjoKBsE4x3H+BkegoM/em46NNlCqNTmUYADjBbeNefNxYV7giUp0VxICtqdrbqU7iVaeZNXA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+
+    <script>
+        window.addEventListener('load', function () {
+            var val_flag = 0
+
+
+            const file_area = document.querySelector('.file_area'),
+                button = document.querySelector('#browse_btn'),
+                input = file_area.querySelector('#pro_pic')
+            cp_file_area = document.querySelector('.file_area').innerHTML
+            let file
+
+
+            button.addEventListener('click', function (e) {
+                e.preventDefault()
+                input.click()
+            })
+
+            input.addEventListener('change', function (e) {
+                e.preventDefault();
+                file = this.files[0]
+                file_area.classList.add('active')
+                showFile();
+            });
+
+            showFile = () => {
+                let file_type = file.type;
+                let valid_file_ext = ["image/jpeg", "image/jpg", "image/png"];
+
+
+                if (valid_file_ext.includes(file_type)) {
+                    let fileReader = new FileReader();
+                    fileReader.onload = () => {
+                        let fileURL = fileReader.result;
+                        let imgTag = `<img src="${fileURL}" alt="image">
+                            <input type="text" name="profilepic" value="${fileURL}" hidden>
+                        `;
+                        file_area.innerHTML = imgTag;
+
+                    };
+                    fileReader.readAsDataURL(file);
+                } else {
+                    file_area.classList.remove('active')
+                    alert("This is not an Image File!");
+
+                }
+            }
+
+
+
+            $("#add_edu_block").click(function (e) {
+                e.preventDefault()
+                const edu_block = document.getElementById('edu_block')
+                const edu_block_blu_prnt = `
+                <div class="edu_qual container border rounded shadow-sm my-3 p-3 " >
+                <div class="float-end" onclick="rmBlock(this)"><i class="text-danger h4 fa-solid fa-circle-minus"></i></div><br>
+                <div class="row mb-3 g-2"><div class="row mb-3 pb-3 g-2"> <div class="col-md-3">
+                 <div class="form-floating"><select class="form-select edu_qualification"  aria-label="Qualification"> <option selected>Choose</option>
+                 <option value="1">Graduation</option><option value="2">Diploma</option><option value="3">Higer Secondary</option>
+                 <option value="4">SSLC</option> <option value="5">Other</option> </select><label for="edu_qualification">Qualification</label></div> </div>
+                 <div class="col-md"><div class="form-floating"><input type="text" class="form-control edu_stream"  autocomplete="off" placeholder="Stream name">
+                 <label for="edu_stream">Stream name</label></div></div></div>
+                 <div class="row mb-3 pb-3 g-2"><div class="col-md"><div class="form-floating"><input type="text" class="form-control edu_institute"   autocomplete="off" placeholder="Institute">
+                 <label for="edu_institute">Institute</label> </div></div>
+                <div class="col-md"> <div class="form-floating"> <input type="month" class="form-control edu_year_pass"  autocomplete="off" placeholder="Year of pass">
+                <label for="edu_year_pass">Year of pass</label>
+                </div></div></div></div></div>`
+                $(edu_block).append(edu_block_blu_prnt)
+
+            });
+
+            $("#add_work_block").click(function (e) {
+                e.preventDefault()
+                const work_block = document.getElementById('work_block')
+                const work_block_blu_prnt = `
+                <div class="work border rounded shadow-sm my-3 p-3"><div class="float-end" onclick="rmBlock(this)"><i class="text-danger h4 fa-solid fa-circle-minus"></i></div><br><div class="row mb-3 g-2"><div class="row mb-3 pb-3 g-2"> <div class="col-md">
+                <div class="form-floating"><input type="text" class="form-control work_designation"   autocomplete="off" placeholder="Designation">
+                <label for="work_designation">Designation</label></div></div><div class="col-md"><div class="form-floating"> <input type="text" class="form-control work_company" 
+                  autocomplete="off" placeholder="Company"><label for="work_company">Company</label> </div></div></div>
+                 <div class="row mb-3 pb-3 g-2"><div class="col-md"><div class="form-floating"><input type="month" class="form-control work_start_with" 
+                  autocomplete="off" placeholder="Join date"><label for="work_start_with">Joined on</label></div></div>
+                <div class="col-md"><div class="form-floating"><input type="month" class="form-control work_end_with"  autocomplete="off" placeholder="Join date">
+                 <label for="work_end_with">leave on</label> </div> </div></div></div></div>`
+                $(work_block).append(work_block_blu_prnt)
+
+
+            })
+
+            $("#button_addon_skill").click(function (e) {
+                e.preventDefault();
+                e.stopPropagation();
+                var re = /^[a-zA-Z\- ]+$/
+
+
+                const skill_block = this.parentElement,
+                    skill_input = skill_block.querySelector('input')
+
+                var skill = skill_input.value
+                if (skill.trim() == "") {
+                    alert('field is reqiured')
+                } else if (!re.test(skill)) {
+                    alert("Only accept alphabets")
+                } else {
+                    var skills_block = document.getElementById('skills_block')
+                    var new_skill_buble = `<div class="skill_buble"><span>${skill}</span><span  class="skill_rem p-1" ><i class="fa-sharp fa-solid fa-xmark" onclick="rmBubles(this)"></i></span></div>`
+                    skills_block.innerHTML += new_skill_buble
+                    skill_input.value = ''
+
+                }
+
+            })
+            $("#button_addon_xpert").click(function (e) {
+                e.preventDefault()
+                var re = /^[a-zA-Z\- ]+$/
+                const xpert_block = this.parentElement,
+                    xpert_input = xpert_block.querySelector('input')
+                xpert = xpert_input.value
+
+                if (xpert.trim() == "") {
+                    alert('field is reqiured')
+                } else if (!re.test(xpert)) {
+                    alert("Only accept alphabets")
+                } else {
+                    var xpert_blocks = document.getElementById('expert_block')
+                    var new_xpert_buble = `<div class="xpert_buble"><span>${xpert}</span><span  class="skill_rem p-1" ><i class="fa-sharp fa-solid fa-xmark" onclick="rmBubles(this)"></i></span></div>`
+                    xpert_blocks.innerHTML += new_xpert_buble
+                    xpert_input.value = ''
+
+                }
+
+            })
+
+
+            $("#frm_main").submit(function (event) {
+                event.preventDefault();
+                event.stopPropagation();
+                const edu_qual = document.querySelectorAll(".edu_qual")
+                const work = document.querySelectorAll(".work")
+                const skills_bubles = document.querySelectorAll('.skill_buble')
+                const xpert_buble = document.querySelectorAll('.xpert_buble')
+
+
+
+                var formData = new FormData(this)
+
+                var eduArr = []
+                var workArr = []
+                var skillsArr = []
+                var xpertsArr = []
+                edu_qual.forEach(function (item) {
+                    var qual_type = item.querySelector(".edu_qualification"),
+                        qual_stream = item.querySelector(".edu_stream"),
+                        qual_inst = item.querySelector(".edu_institute"),
+                        qual_year_of_pass = item.querySelector(".edu_year_pass");
+                    var rowEduArr = {
+                        'type': qual_type.value,
+                        'stream': qual_stream.value,
+                        'institute': qual_inst.value,
+                        'year': qual_year_of_pass.value
+                    }
+                    eduArr.push(rowEduArr)
+                })
+                work.forEach(function (item) {
+                    var work_designation = item.querySelector(".work_designation"),
+                        work_company = item.querySelector(".work_company"),
+                        work_start_with = item.querySelector(".work_start_with"),
+                        work_end_with = item.querySelector(".work_end_with");
+                    var rowWorkArr = {
+                        'designation': work_designation.value,
+                        'company': work_company.value,
+                        'start_with': work_start_with.value,
+                        'end_with': work_end_with.value
+                    }
+                    workArr.push(rowWorkArr)
+                })
+                skills_bubles.forEach(function (item) {
+                    var skill_buble_span = item.querySelector('span')
+                    skillsArr.push(skill_buble_span.innerText)
+                });
+                xpert_buble.forEach(function (item) {
+                    var xpert_buble_span = item.querySelector('span')
+                    xpertsArr.push(xpert_buble_span.innerText)
+                });
+
+                formData.append('experts', xpertsArr)
+                formData.append('education_qualification', JSON.stringify(eduArr))
+                formData.append('work_experiance', JSON.stringify(workArr))
+                formData.append('skills', skillsArr)
+                var validate_fileds = ['lname', 'designation', 'discr', 'com_addr', 'mobile', 'email']
+
+                this.validation_man = {
+                    name: {
+                        regex: /^[a-zA-Z\- ]+$/,
+                        err_msg: "Enter a valid String"
+                    },
+                    email: {
+                        regex: /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/,
+                        err_msg: "Enter a valid Email"
+                    },
+                    mobile: {
+                        regex: /^[0]?[7896]\d{9}$/,
+                        err_msg: "Enter a valid Mobile"
+                    },
+                    alpha_num: {
+                        regex: /^[a-zA-Z0-9-_]+(([',. -][a-zA-Z ])?[a-zA-Z0-9-_]*)*$/,
+                        err_msg: "Please provide valid input",
+                    },
+                };
+
+                for (var key of formData.keys()) {
+                    var curr_ele = document.getElementById(key)
+                    if (curr_ele != null) {
+                        var datatype = curr_ele.getAttribute("aria-datatype");
+                        var isRequired = curr_ele.getAttribute("aria-required");
+                        var info_msg = isRequired ? "*Requierd" : "Optional";
+
+                        if (formData.get(key).trim() == "" && isRequired) {
+                            curr_ele.classList.add("is-invalid");
+                            curr_ele.nextElementSibling.innerHTML = info_msg;
+                            curr_ele.focus();
+                            return;
+                        } else if (datatype != null) {
+                            if (
+                                !this.validation_man[datatype]['regex'].test(
+                                    formData.get(key).trim()
+                                )
+                            ) {
+                                curr_ele.classList.add("is-invalid");
+                                curr_ele.nextElementSibling.innerHTML = this.validation_man[datatype]["err_msg"];;
+                                curr_ele.focus();
+                                return;
+                            }
+                        }
+
+
+                    }
+                }
+
+                $.ajax({
+                    url: $(this).attr('action'),
+                    type: $(this).attr('method'),
+                    data: formData,
+                    beforeSend: function () {
+                        //
+                    },
+                    success: function (data) {
+                        res = data
+                        var staticBackdrop = document.getElementById('staticBackdrop')
+                        if (res['success']) {
+
+                            location.replace(res['preview'])
+
+                        } else {
+                            staticBackdrop.querySelector("#staticBackdropLabel").innerText = "Something went wrong"
+                            staticBackdrop.querySelector(".modal-body").innerText = res['message']
+                            $(staticBackdrop).modal('show')
+                        }
+                    }, error: function (e) {
+                        console.log(e);
+                    },
+                    cache: false,
+                    contentType: false,
+                    processData: false
+                });
+
+
+            })
+        }, false);
+
+
+
+
+
+    </script>
+</body>
+
+</html>
