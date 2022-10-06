@@ -1,4 +1,5 @@
 import json
+import re
 from flask import Flask, render_template, request, jsonify, redirect, make_response, abort
 from weasyprint import HTML
 import uuid
@@ -16,10 +17,18 @@ def index():
     except:
         abort(500)
     else:
-        return redirect("/resume/{}".format(key), code=302)
+        return render_template('index.html')
 
+@app.route('/resume/basic')
+def resume_basic():
+    try:
+        key = uuid.uuid4().hex
+    except:
+        abort(500)
+    else:
+        return redirect("/resume/basic/{}".format(key), code=302)
 
-@app.route('/resume/<string:key>')
+@app.route('/resume/basic/<string:key>')
 def build_resume(key: str):
     try:
         user_data = master_db.get(key)
